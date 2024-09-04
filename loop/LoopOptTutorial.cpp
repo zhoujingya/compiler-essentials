@@ -13,6 +13,10 @@
 /// Conference, 2019.
 //===----------------------------------------------------------------------===
 
+#include "llvm/IR/LegacyPassManager.h"
+#include "llvm/Passes/PassBuilder.h"
+#include "llvm/Passes/PassPlugin.h"
+#include "llvm/Support/raw_ostream.h"
 #include "LoopOptTutorial.h"
 #include "llvm/Analysis/LoopPass.h"
 #include "llvm/IR/Function.h"
@@ -25,9 +29,9 @@ using namespace llvm;
 
 bool LoopSplit::run(Loop &L) const {
 
-  LLVM_DEBUG(dbgs() << "Entering " << __func__ << "\n");
+  outs() << "Entering " << L.getName() << "\n";
 
-  LLVM_DEBUG(dbgs() << "TODO: Need to check if Loop is a valid candidate\n");
+  outs() << "TODO: Need to check if Loop is a valid candidate\n";
 
   return false;
 }
@@ -44,4 +48,30 @@ PreservedAnalyses LoopOptTutorialPass::run(Loop &L, LoopAnalysisManager &LAM,
     return PreservedAnalyses::all();
 
   return llvm::getLoopPassPreservedAnalyses();
+}
+
+//-----------------------------------------------------------------------------
+// New PM Registration
+//-----------------------------------------------------------------------------
+llvm::PassPluginLibraryInfo getLoopOptTutorialPluginInfo() {
+  return {LLVM_PLUGIN_API_VERSION, "LoopOptTutorial", LLVM_VERSION_STRING,
+          [](PassBuilder &PB) {
+            PB.registerPipelineParsingCallback(
+                [](StringRef Name, LoopPassManager &LPM,
+                   ArrayRef<PassBuilder::PipelineElement>) {
+                  if (Name == DEBUG_TYPE) {
+                    LPM.addPass(LoopOptTutorialPass());
+                    return true;
+                  }
+                  return false;
+                });
+          }};
+}
+
+// This is the core interface for pass plugins. It guarantees that 'opt' will
+// be able to recognize HelloWorld when added to the pass pipeline on the
+// command line, i.e. via '-passes=hello-world'
+extern "C" LLVM_ATTRIBUTE_WEAK ::llvm::PassPluginLibraryInfo
+llvmGetPassPluginInfo() {
+  return getLoopOptTutorialPluginInfo();
 }
