@@ -25,3 +25,8 @@ ret i32 %sub
 `opt --passes=mem2reg -S -o mem2reg.ll mem2reg.ll`
 
 Refer to this : `llvm/lib/Transforms/Utils/PromoteMemoryToRegister.cpp`
+
+
+## NICE!!!!
+
+[llvm dev meeting 2019](https://llvm.org/devmtg/2019-10/)
