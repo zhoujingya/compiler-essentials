@@ -29,7 +29,7 @@ using namespace llvm;
 
 bool LoopSplit::run(Loop &L) const {
 
-  LLVM_DEBUG(dbgs() << "Entering " << L.getName() << "\n");
+  LLVM_DEBUG(dbgs() << "Entering " << __func__ << "\n");
 
   LLVM_DEBUG(dbgs() << "TODO: Need to check if Loop is a valid candidate\n");
 

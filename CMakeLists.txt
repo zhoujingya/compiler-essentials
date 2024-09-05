@@ -5,7 +5,7 @@ project(llvm-essential
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(LLVM REQUIRED)
-
+set(CMAKE_CXX_STANDARD 17)
 add_definitions(${LLVM_DEFINITIONS})
 include(AddLLVM)
 message("LLVM version: " ${LLVM_PACKAGE_VERSION})
