@@ -29,9 +29,9 @@ using namespace llvm;
 
 bool LoopSplit::run(Loop &L) const {
 
-  outs() << "Entering " << L.getName() << "\n";
+  LLVM_DEBUG(dbgs() << "Entering " << L.getName() << "\n");
 
-  outs() << "TODO: Need to check if Loop is a valid candidate\n";
+  LLVM_DEBUG(dbgs() << "TODO: Need to check if Loop is a valid candidate\n");
 
   return false;
 }
@@ -59,7 +59,7 @@ llvm::PassPluginLibraryInfo getLoopOptTutorialPluginInfo() {
             PB.registerPipelineParsingCallback(
                 [](StringRef Name, LoopPassManager &LPM,
                    ArrayRef<PassBuilder::PipelineElement>) {
-                  if (Name == DEBUG_TYPE) {
+                  if (Name == "LoopOptTutorial") {
                     LPM.addPass(LoopOptTutorialPass());
                     return true;
                   }
