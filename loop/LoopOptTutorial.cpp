@@ -39,8 +39,8 @@ bool LoopSplit::run(Loop &L) const {
 PreservedAnalyses LoopOptTutorialPass::run(Loop &L, LoopAnalysisManager &LAM,
                                            LoopStandardAnalysisResults &AR,
                                            LPMUpdater &U) {
-  LLVM_DEBUG(dbgs() << "Entering LoopOptTutorialPass::run\n");
-  LLVM_DEBUG(dbgs() << "Loop: "; L.dump(); dbgs() << "\n");
+  outs() << "Entering LoopOptTutorialPass::run " << "\n";
+  outs() << "Loop: " << L << "\n";
 
   bool Changed = LoopSplit(AR.LI).run(L);
 
