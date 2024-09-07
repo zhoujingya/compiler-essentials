@@ -14,6 +14,7 @@ message("LLVM library directory: " ${LLVM_LIBRARY_DIRS})
 set(LLVM_DIR ${LLVM_INSTALL_PREFIX})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+# Very very important when importing LLVM library
 if(NOT LLVM_ENABLE_RTTI)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
 endif()
