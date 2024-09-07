@@ -1,5 +1,4 @@
-; RUN: opt -S -passes=loop-opt-tutorial -debug-only=loop-opt-tutorial < %s 2>&1 | FileCheck %s
-; REQUIRES: asserts
+; RUN: opt -load-pass-plugin=%shlibdir/libloopOptTutorial%shlibext  -S -passes=LoopOptTutorial - < %s 2>&1 | FileCheck %s
 
 @B = common global [1024 x i32] zeroinitializer, align 16
 
