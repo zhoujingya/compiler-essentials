@@ -31,6 +31,8 @@ public:
 
   bool run(Loop &L) const;
 
+  bool isCandidate(Loop &L) const;
+
 private:
   LoopInfo &LI;
 };

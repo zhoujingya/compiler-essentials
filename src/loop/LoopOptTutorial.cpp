@@ -13,14 +13,12 @@
 /// Conference, 2019.
 //===----------------------------------------------------------------------===
 
-#include "llvm/IR/LegacyPassManager.h"
-#include "llvm/Passes/PassBuilder.h"
-#include "llvm/Passes/PassPlugin.h"
-#include "llvm/Support/raw_ostream.h"
 #include "LoopOptTutorial.h"
 #include "llvm/Analysis/LoopPass.h"
 #include "llvm/IR/Function.h"
 #include "llvm/Pass.h"
+#include "llvm/Passes/PassBuilder.h"
+#include "llvm/Passes/PassPlugin.h"
 #include "llvm/Support/raw_ostream.h"
 
 using namespace llvm;
@@ -31,15 +29,48 @@ bool LoopSplit::run(Loop &L) const {
 
   LLVM_DEBUG(dbgs() << "Entering " << __func__ << "\n");
 
-  LLVM_DEBUG(dbgs() << "TODO: Need to check if Loop is a valid candidate\n");
+  if (!isCandidate(L)) {
+    outs() << "Loop " << L.getName() << " is not a candidate for splitting\n";
+    return false;
+  }
+
+  outs() << "Loop " << L.getName() << " is a candidate for splitting!\n";
 
   return false;
+}
+
+bool LoopSplit::isCandidate(Loop &L) const {
+
+  // Requires preheader and dedicated exits
+  if (L.isLoopSimplifyForm())
+    return false;
+
+  // Because we need to clone several loop copies, so need to check whether it's
+  // safe to clone
+  if (!L.isSafeToClone())
+    return false;
+
+  // Only has one exit block
+  if (!L.getExitBlock())
+    return false;
+
+  // Only split innermost loops. Thus, if the loop has any children, it cannot
+  // be split.
+  if (!L.getSubLoops().empty())
+    return false;
+
+  // Only has one exiting block
+  if (!L.getExitingBlock())
+    return false;
+
+  return true;
 }
 
 PreservedAnalyses LoopOptTutorialPass::run(Loop &L, LoopAnalysisManager &LAM,
                                            LoopStandardAnalysisResults &AR,
                                            LPMUpdater &U) {
-  outs() << "Entering LoopOptTutorialPass::run " << "\n";
+  outs() << "Entering LoopOptTutorialPass::run "
+         << "\n";
   outs() << "Loop: " << L << "\n";
 
   bool Changed = LoopSplit(AR.LI).run(L);
