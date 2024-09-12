@@ -3,6 +3,7 @@
 `cmake -B build -G Ninja`
 `cmake --build build`
 
+> Build debug version llvm, then export toolchain binary path
 
 ## How to test
 
