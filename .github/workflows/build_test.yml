@@ -1,0 +1,38 @@
+name: llvm essential build and test
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * *' # Runs at 2am everyday
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout llvm-essential
+      uses: actions/checkout@v4
+      with:
+        path: llvm-essential
+
+    - name: Install llvm and clang
+      run: |
+        sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+
+    - name: Preparing test environment
+      run: |
+        sudo apt install python3-pip -y
+        pip3 install lit
+
+    - name: Start building
+      run: |
+        cd ${{github.workspace}}/llvm-essential
+        cmake -B build -S .
+        cmake --build build
+
+    - name: Start test
+      run: |
+        cd ${{github.workspace}}/llvm-essential
+        lit test/*.ll
