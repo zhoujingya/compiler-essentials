@@ -1,0 +1,3 @@
+[submodule "chibicc"]
+	path = chibicc
+	url = https://github.com/rui314/chibicc
