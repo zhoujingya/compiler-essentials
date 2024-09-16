@@ -1,3 +1,4 @@
-[submodule "chibicc"]
-	path = chibicc
+
+[submodule "third-party/chibicc"]
+	path = third-party/chibicc
 	url = https://github.com/rui314/chibicc
