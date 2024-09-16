@@ -1,0 +1,12 @@
+function(add_subdir_recursive source_dir)
+  file(GLOB ENTIRE_CONTENTS RELATIVE ${source_dir} ${source_dir}/*)
+
+  foreach(ENTRY ${ENTIRE_CONTENTS})
+      if(IS_DIRECTORY ${source_dir}/${ENTRY})
+          list(APPEND SUBDIRECTORIES ${ENTRY})
+      endif()
+  endforeach()
+  foreach(SUBDIR ${SUBDIRECTORIES})
+    add_subdirectory(${SUBDIR})
+  endforeach()
+endfunction()
