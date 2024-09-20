@@ -35,10 +35,10 @@ jobs:
     - name: Start building
       run: |
         cd ${{github.workspace}}/llvm-essential
-        cmake -B build -S .
+        cmake -B build -S . -DHOME=$HOME
         cmake --build build
 
     - name: Start test
       run: |
         cd ${{github.workspace}}/llvm-essential
-        lit test/*.ll
+        lit test
