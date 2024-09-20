@@ -1,7 +1,10 @@
 ## How to build
 
-`cmake -B build -G Ninja`
+`cmake -B build -G Ninja -DHOME=$HOME`
+
 `cmake --build build`
+
+`./install-riscv.sh`
 
 > Build debug version llvm, then export toolchain binary path
 

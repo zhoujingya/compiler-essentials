@@ -56,6 +56,7 @@ llvm_config.add_tool_substitutions(tool_substitutions)
 tools = ["opt", "lli", "not", "FileCheck", "clang"]
 llvm_config.add_tool_substitutions(tools, config.llvm_tools_dir)
 llvm_config.add_tool_substitutions(["commandline", "smallcc"], config.bin_dir)
+llvm_config.add_tool_substitutions(["qemu-riscv64", "riscv64-unknown-linux-gnu-gcc"], config.rv_bin_dir)
 # The LIT variable to hold the file extension for shared libraries (this is
 # platform dependent)
 config.substitutions.append(('%shlibext', config.llvm_shlib_ext))

@@ -6,8 +6,9 @@
 #include "llvm/Support/SourceMgr.h"
 using namespace llvm;
 cl::opt<std::string> inputParsedString("input-string",
-                                   cl::desc("string to be parsed"),
-                                   cl::init("0"), cl::value_desc("filename"));
+                                       cl::desc("string to be parsed"),
+                                       cl::init("0"),
+                                       cl::value_desc("filename"));
 
 /// get input file content
 std::string getInputFile(llvm::StringRef filename) {

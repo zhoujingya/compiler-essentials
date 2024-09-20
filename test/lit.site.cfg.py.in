@@ -4,7 +4,7 @@ config.llvm_tools_dir = "@LLVM_DIR@/bin"
 config.llvm_shlib_ext = "@LT_TEST_SHLIBEXT@"
 config.llvm_shlib_dir = "@CMAKE_LIBRARY_OUTPUT_DIRECTORY@"
 config.bin_dir = "@CMAKE_RUNTIME_OUTPUT_DIRECTORY@"
-
+config.rv_bin_dir = "@HOME@/riscv/bin"
 import lit.llvm
 # lit_config is a global instance of LitConfig
 lit.llvm.initialize(lit_config, config)
