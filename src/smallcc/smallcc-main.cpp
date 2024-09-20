@@ -14,7 +14,7 @@ std::string getInputFile(llvm::StringRef filename) {
   llvm::ErrorOr<std::unique_ptr<llvm::MemoryBuffer>> fileOrErr =
       llvm::MemoryBuffer::getFileOrSTDIN(filename);
   if (std::error_code ec = fileOrErr.getError())
-    llvm::report_fatal_error("Could not open input file: "+ filename);
+    llvm::report_fatal_error("Could not open input file: " + filename);
   return fileOrErr.get()->getBuffer().str();
 }
 
