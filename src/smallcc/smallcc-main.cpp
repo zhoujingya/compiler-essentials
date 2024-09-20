@@ -5,9 +5,9 @@
 #include "llvm/Support/MemoryBuffer.h"
 #include "llvm/Support/SourceMgr.h"
 using namespace llvm;
-cl::opt<std::string> inputFilename(cl::Positional,
-                                   cl::desc("<input smallcc file>"),
-                                   cl::init("-"), cl::value_desc("filename"));
+cl::opt<std::string> inputParsedString("input-string",
+                                   cl::desc("string to be parsed"),
+                                   cl::init("0"), cl::value_desc("filename"));
 
 /// get input file content
 std::string getInputFile(llvm::StringRef filename) {
@@ -21,6 +21,10 @@ std::string getInputFile(llvm::StringRef filename) {
 int main(int argc, char **argv) {
   cl::ParseCommandLineOptions(argc, argv, "smallcc compiler\n");
 
-  auto ff = getInputFile(inputFilename);
-  outs() << ff << "\n";
+  outs() << "  .globl main\n";
+  outs() << "main:\n";
+  printf("  li a0, %d\n", atoi(inputParsedString.c_str()));
+  printf("  ret\n");
+
+  // TODO: add
 }
