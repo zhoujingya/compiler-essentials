@@ -1,7 +1,9 @@
-// RUN: smallcc -input-string="12" >& /tmp/test.s |
-// RUN: /tmp/test.s FileCheck %s
+//smallcc -input-string="123" > /tmp/test.s
+// riscv64-unknown-linux-gnu-gcc /tmp/test.s  -static -o /tmp/a.out
+// qemu-riscv64 /tmp/a.out
+// echo $? > /tmp/test.log >& /dev/null || true
+// RUN: smallcc -input-string="123" > /tmp/test.s
+// RUN: riscv64-unknown-linux-gnu-gcc /tmp/test.s  -static -o /tmp/a.out
+// RUN: qemu-riscv64 /tmp/a.out | FileCheck %s
 
-// CHECK:  .globl main
-// CHECK-NEXT: main:
-// CHECK-NEXT: li a0, 12
-// CHECK-NEXT: ret
+// CHECK: 123
