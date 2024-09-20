@@ -17,12 +17,6 @@ jobs:
       with:
         path: llvm-essential
 
-    - name: Checkout riscv-gnu-toolchain
-      uses: actions/checkout@v4
-      with:
-        repository: riscv/riscv-gnu-toolchain
-        path: riscv-gnu-toolchain
-
     - name: Install llvm and clang
       run: |
         sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
@@ -32,12 +26,11 @@ jobs:
         sudo apt install python3-pip -y
         pip3 install lit
 
-    - name: Build riscv-gnu-toolchain
+    - name: Get riscv-gnu-toolchain
       run: |
-        cd ${{github.workspace}}/riscv-gnu-toolchain
-        CC=`which clang`./configure
-        make
-        sudo make install
+        cd ${{github.workspace}}/llvm-essential
+        bash install-riscv.sh
+        export PATH=$HOME/riscv/bin:$PATH
 
     - name: Start building
       run: |
