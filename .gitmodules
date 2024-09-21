@@ -2,3 +2,6 @@
 [submodule "third-party/chibicc"]
 	path = third-party/chibicc
 	url = https://github.com/rui314/chibicc
+[submodule "third-party/MLC"]
+	path = third-party/MLC
+	url = https://github.com/zhoujingya/MLC
