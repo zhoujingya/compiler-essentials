@@ -4,7 +4,7 @@
 
 `cmake --build build`
 
-`./install-riscv.sh`
+`./install-riscv.sh` to install `riscv` toolchain
 
 > Build debug version llvm, then export toolchain binary path
 
