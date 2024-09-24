@@ -1,9 +1,10 @@
 function(add_subdir_recursive source_dir)
+  set(SUBDIRECTORIES "")
   file(GLOB ENTIRE_CONTENTS RELATIVE ${source_dir} ${source_dir}/*)
 
   foreach(ENTRY ${ENTIRE_CONTENTS})
       if(IS_DIRECTORY ${source_dir}/${ENTRY})
-          list(APPEND SUBDIRECTORIES ${ENTRY})
+          list(APPEND SUBDIRECTORIES ${source_dir}/${ENTRY})
       endif()
   endforeach()
   foreach(SUBDIR ${SUBDIRECTORIES})
