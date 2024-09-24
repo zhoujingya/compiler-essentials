@@ -8,3 +8,6 @@
 [submodule "third-party/How-to-build-an-LLVM-backend"]
 	path = third-party/How-to-build-an-LLVM-backend
 	url = https://github.com/zhoujingya/How-to-build-an-LLVM-backend.git
+[submodule "third-party/Learn-LLVM-17"]
+	path = third-party/Learn-LLVM-17
+	url = https://github.com/PacktPublishing/Learn-LLVM-17
