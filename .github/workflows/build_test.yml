@@ -28,7 +28,7 @@ jobs:
 
     - name: Preparing test environment
       run: |
-        sudo apt install python3-pip libcurl4-openssl-dev libedit-dev -y
+        sudo apt install python3-pip libcurl4-openssl-dev libedit-dev libgtest-dev -y
         pip3 install lit
 
     - name: Get riscv-gnu-toolchain
