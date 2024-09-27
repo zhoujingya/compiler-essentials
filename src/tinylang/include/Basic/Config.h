@@ -6,5 +6,7 @@
 
 namespace tinylang {
 std::string getTinylangVersion();
+
+std::string getLLVMVersion();
 } // namespace tinylang
 #endif
