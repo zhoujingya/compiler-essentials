@@ -9,7 +9,7 @@ set(TINYLANG_VERSION_STRING "0.1")
 
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/include/Basic/Config.inc.in
-  ${CMAKE_CURRENT_BINARY_DIR}/include/Basic/Version.inc)
+  ${CMAKE_CURRENT_BINARY_DIR}/include/Basic/Config.inc)
 
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}/include)
 

@@ -1,4 +1,5 @@
 
-add_library(tinylang SHARED TokenKinds.cpp)
+file(GLOB SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+add_library(tinylangBasic SHARED ${SOURCE})
 
-target_link_libraries(tinylang PRIVATE LLVMCore LLVMSupport)
+target_link_libraries(tinylangBasic PRIVATE LLVMCore LLVMSupport)
