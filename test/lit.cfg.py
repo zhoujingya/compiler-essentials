@@ -2,7 +2,7 @@
 
 # Configuration file for the 'lit' test runner.
 
-import platform
+import platform, os
 
 import lit.formats
 # Global instance of LLVMConfig provided by lit
@@ -62,3 +62,9 @@ llvm_config.add_tool_substitutions(["qemu-riscv64", "riscv64-unknown-linux-gnu-g
 config.substitutions.append(('%shlibext', config.llvm_shlib_ext))
 # The LIT variable to hold the location of plugins/libraries
 config.substitutions.append(('%shlibdir', config.llvm_shlib_dir))
+
+# Add the 'utils' directory to the environment path
+utils_path = os.path.join(os.path.dirname(__file__), '..', 'utils')
+config.environment['PATH'] = os.pathsep.join((utils_path, config.environment.get('PATH', '')))
+# Define a substitution for the utils path
+config.substitutions.append(('%utils_path', utils_path))
