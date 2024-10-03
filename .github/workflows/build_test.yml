@@ -35,7 +35,7 @@ jobs:
       run: |
         cd ${{github.workspace}}/llvm-essential
         bash install-riscv.sh
-        export PATH=$HOME/riscv/bin:$PATH
+        export PATH=/opt/riscv/bin:$PATH
 
     - name: Start building
       run: |

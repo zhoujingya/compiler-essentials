@@ -4,7 +4,7 @@
 set -e
 
 # 进入~目录
-cd
+cd /opt
 rm -rf riscv
 
 # 下载编译好的RISCV环境包
