@@ -1,0 +1,73 @@
+name: Monthly Release
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # 每月1日00:00 UTC触发
+  workflow_dispatch:  # 允许手动触发
+
+env:
+  VERSION: 18
+
+jobs:
+  build_and_release:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout llvm-essential
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # 获取所有历史记录，以便正确生成版本号
+
+    - name: Install llvm and clang
+      run: |
+        wget https://apt.llvm.org/llvm.sh
+        chmod +x llvm.sh
+        sudo ./llvm.sh $VERSION
+        sudo apt install -y libclang-$VERSION-dev
+
+    - name: Preparing environment
+      run: |
+        sudo apt install python3-pip libcurl4-openssl-dev libedit-dev libgtest-dev -y
+        pip3 install lit
+
+    - name: Build project
+      run: |
+        export PATH=/usr/lib/llvm-$VERSION/bin:$PATH
+        cmake -B build -S . -DHOME=$HOME
+        cmake --build build
+
+    - name: Generate version number
+      id: version
+      run: echo "::set-output name=version::$(date +'%Y.%m.%d')"
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.version.outputs.version }}
+        release_name: Release ${{ steps.version.outputs.version }}
+        draft: false
+        prerelease: false
+        body: |
+          This is an automated release of llvm-essential.
+
+          Changes since last release:
+          ${{ github.event.head_commit.message }}
+
+    - name: Zip build artifacts
+      run: |
+        cd build
+        zip -r ../build_artifacts.zip . -i "*/lib/*" "*"
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build_artifacts.zip
+        asset_name: build_artifacts-${{ steps.version.outputs.version }}.zip
+        asset_content_type: application/zip
