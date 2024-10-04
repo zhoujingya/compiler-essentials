@@ -59,12 +59,17 @@ public:
 
 private:
   void identifier(Token &Result);
+  // Form a number token from the current position.
   void number(Token &Result);
+  // Form a string token from the current position.
   void string(Token &Result);
+  // Skip the comment.
   void comment();
 
+  // Get the location of the current position.
   SMLoc getLoc() { return SMLoc::getFromPointer(CurPtr); }
 
+  // Form a token from the current position to TokEnd.
   void formToken(Token &Result, const char *TokEnd, tok::TokenKind Kind);
 };
 } // namespace tinylang

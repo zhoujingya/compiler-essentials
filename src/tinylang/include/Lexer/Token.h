@@ -3,8 +3,8 @@
 
 #include "Basic/LLVM.h"
 #include "Basic/TokenKinds.h"
-#include "llvm/ADT/StringRef.h"
-#include "llvm/Support/SMLoc.h"
+#include <llvm/ADT/StringRef.h>
+#include <llvm/Support/SMLoc.h>
 
 namespace tinylang {
 
