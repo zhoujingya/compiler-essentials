@@ -11,3 +11,6 @@
 [submodule "third-party/Learn-LLVM-17"]
 	path = third-party/Learn-LLVM-17
 	url = https://github.com/PacktPublishing/Learn-LLVM-17
+[submodule "third-party/musl"]
+	path = third-party/musl
+	url = https://git.musl-libc.org/git/musl
