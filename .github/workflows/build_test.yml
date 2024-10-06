@@ -2,12 +2,10 @@ name: llvm essential build and test
 env:
   VERSION: 18
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
   schedule:
-    - cron: '0 2 * * *' # Runs at 2am everyday
+    - cron: '0 23 * * *' # Runs at 2am everyday
   workflow_dispatch:
 jobs:
   build:
