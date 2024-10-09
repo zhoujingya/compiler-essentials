@@ -1,6 +1,6 @@
 ## How to build
 
-`cmake -B build -G Ninja -DHOME=$HOME`
+`cmake -B build -G Ninja`
 
 `cmake --build build`
 
