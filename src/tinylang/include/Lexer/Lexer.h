@@ -57,6 +57,9 @@ public:
   /// Gets source code buffer.
   StringRef getBuffer() const { return CurBuf; }
 
+  // Dump the tokens in the buffer.
+  void dumpTokens();
+
 private:
   void identifier(Token &Result);
   // Form a number token from the current position.

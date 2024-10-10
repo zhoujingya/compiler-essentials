@@ -2,14 +2,12 @@
 
 using namespace tinylang;
 
-void KeywordFilter::addKeyword(StringRef Keyword,
-                               tok::TokenKind TokenCode) {
+void KeywordFilter::addKeyword(StringRef Keyword, tok::TokenKind TokenCode) {
   HashTable.insert(std::make_pair(Keyword, TokenCode));
 }
 
 void KeywordFilter::addKeywords() {
-#define KEYWORD(NAME, FLAGS)                               \
-  addKeyword(StringRef(#NAME), tok::kw_##NAME);
+#define KEYWORD(NAME, FLAGS) addKeyword(StringRef(#NAME), tok::kw_##NAME);
 #include "Basic/TokenKinds.def"
 }
 
@@ -23,13 +21,11 @@ LLVM_READNONE inline bool isVerticalWhitespace(char Ch) {
 }
 
 LLVM_READNONE inline bool isHorizontalWhitespace(char Ch) {
-  return isASCII(Ch) && (Ch == ' ' || Ch == '\t' ||
-                         Ch == '\f' || Ch == '\v');
+  return isASCII(Ch) && (Ch == ' ' || Ch == '\t' || Ch == '\f' || Ch == '\v');
 }
 
 LLVM_READNONE inline bool isWhitespace(char Ch) {
-  return isHorizontalWhitespace(Ch) ||
-         isVerticalWhitespace(Ch);
+  return isHorizontalWhitespace(Ch) || isVerticalWhitespace(Ch);
 }
 
 LLVM_READNONE inline bool isDigit(char Ch) {
@@ -37,14 +33,12 @@ LLVM_READNONE inline bool isDigit(char Ch) {
 }
 
 LLVM_READNONE inline bool isHexDigit(char Ch) {
-  return isASCII(Ch) &&
-         (isDigit(Ch) || (Ch >= 'A' && Ch <= 'F'));
+  return isASCII(Ch) && (isDigit(Ch) || (Ch >= 'A' && Ch <= 'F'));
 }
 
 LLVM_READNONE inline bool isIdentifierHead(char Ch) {
   return isASCII(Ch) &&
-         (Ch == '_' || (Ch >= 'A' && Ch <= 'Z') ||
-          (Ch >= 'a' && Ch <= 'z'));
+         (Ch == '_' || (Ch >= 'A' && Ch <= 'Z') || (Ch >= 'a' && Ch <= 'z'));
 }
 
 LLVM_READNONE inline bool isIdentifierBody(char Ch) {
@@ -71,9 +65,9 @@ void Lexer::next(Token &Result) {
     return;
   } else {
     switch (*CurPtr) {
-#define CASE(ch, tok)                                      \
-  case ch:                                                 \
-    formToken(Result, CurPtr + 1, tok);                    \
+#define CASE(ch, tok)                                                          \
+  case ch:                                                                     \
+    formToken(Result, CurPtr + 1, tok);                                        \
     break
       CASE('=', tok::equal);
       CASE('#', tok::hash);
@@ -124,8 +118,7 @@ void Lexer::identifier(Token &Result) {
   while (charinfo::isIdentifierBody(*End))
     ++End;
   StringRef Name(Start, End - Start);
-  formToken(Result, End,
-            Keywords.getKeyword(Name, tok::identifier));
+  formToken(Result, End, Keywords.getKeyword(Name, tok::identifier));
 }
 
 void Lexer::number(Token &Result) {
@@ -146,8 +139,7 @@ void Lexer::number(Token &Result) {
     break;
   default: /* decimal number */
     if (IsHex)
-      Diags.report(getLoc(),
-                   diag::err_hex_digit_in_decimal);
+      Diags.report(getLoc(), diag::err_hex_digit_in_decimal);
     Kind = tok::integer_literal;
     break;
   }
@@ -157,12 +149,10 @@ void Lexer::number(Token &Result) {
 void Lexer::string(Token &Result) {
   const char *Start = CurPtr;
   const char *End = CurPtr + 1;
-  while (*End && *End != *Start &&
-         !charinfo::isVerticalWhitespace(*End))
+  while (*End && *End != *Start && !charinfo::isVerticalWhitespace(*End))
     ++End;
   if (charinfo::isVerticalWhitespace(*End)) {
-    Diags.report(getLoc(),
-                 diag::err_unterminated_char_or_string);
+    Diags.report(getLoc(), diag::err_unterminated_char_or_string);
   }
   formToken(Result, End + 1, tok::string_literal);
 }
@@ -184,18 +174,33 @@ void Lexer::comment() {
       ++End;
   }
   if (!*End) {
-    Diags.report(getLoc(),
-                 diag::err_unterminated_block_comment);
+    Diags.report(getLoc(), diag::err_unterminated_block_comment);
   }
   CurPtr = End;
 }
 
 // Generate token from tokend and curptr
-void Lexer::formToken(Token &Result, const char *TokEnd,
-                      tok::TokenKind Kind) {
+void Lexer::formToken(Token &Result, const char *TokEnd, tok::TokenKind Kind) {
   size_t TokLen = TokEnd - CurPtr;
-  Result.Ptr = CurPtr;;
+  Result.Ptr = CurPtr;
   Result.Length = TokLen;
   Result.Kind = Kind;
   CurPtr = TokEnd;
+}
+
+void Lexer::dumpTokens() {
+  Token tok;
+  while (true) {
+    next(tok);
+    if (tok.is(tok::eof))
+      break;
+    SMLoc Loc = tok.getLocation();
+    unsigned LineNo = SrcMgr.getLineAndColumn(Loc).first;
+    unsigned ColNo = SrcMgr.getLineAndColumn(Loc).second;
+    StringRef Filename =
+        SrcMgr.getMemoryBuffer(SrcMgr.FindBufferContainingLoc(Loc))
+            ->getBufferIdentifier();
+    llvm::outs() << Filename << ":" << LineNo << ":" << ColNo << ": "
+                 << tok.getName() << "\n";
+  }
 }

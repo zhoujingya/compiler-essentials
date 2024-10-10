@@ -17,10 +17,13 @@ static cl::opt<bool> printInputFile("print",
                                     cl::desc("Print input file content"),
                                     cl::init(false),
                                     cl::value_desc("print or not"));
-static cl::opt<std::string> inputFile(cl::Positional,
-                                    cl::desc("<Input file>"),
-                                    cl::init("-"),
-                                    cl::value_desc("Input file path"));
+static cl::opt<bool> dumpTokens("dump-token",
+                                    cl::desc("Dump tokens in the buffer"),
+                                    cl::init(false),
+                                    cl::value_desc("dump or not"));
+static cl::opt<std::string> inputFile(cl::Positional, cl::desc("<Input file>"),
+                                      cl::init("-"),
+                                      cl::value_desc("Input file path"));
 
 int main(int argc, char **argv) {
   cl::ParseCommandLineOptions(argc, argv, "tinylang lexer driver\n");
@@ -33,7 +36,9 @@ int main(int argc, char **argv) {
   SrcMgr.AddNewSourceBuffer(std::move(*FileOrErr), llvm::SMLoc());
   Lexer lexer(SrcMgr, Diags);
   // print file content
-  if(printInputFile)
+  if (printInputFile)
     llvm::outs() << lexer.getBuffer();
+  if (dumpTokens)
+    lexer.dumpTokens();
   return 0;
 }
