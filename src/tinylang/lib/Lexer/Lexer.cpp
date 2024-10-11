@@ -187,20 +187,3 @@ void Lexer::formToken(Token &Result, const char *TokEnd, tok::TokenKind Kind) {
   Result.Kind = Kind;
   CurPtr = TokEnd;
 }
-
-void Lexer::dumpTokens() {
-  Token tok;
-  while (true) {
-    next(tok);
-    if (tok.is(tok::eof))
-      break;
-    SMLoc Loc = tok.getLocation();
-    unsigned LineNo = SrcMgr.getLineAndColumn(Loc).first;
-    unsigned ColNo = SrcMgr.getLineAndColumn(Loc).second;
-    StringRef Filename =
-        SrcMgr.getMemoryBuffer(SrcMgr.FindBufferContainingLoc(Loc))
-            ->getBufferIdentifier();
-    llvm::outs() << Filename << ":" << LineNo << ":" << ColNo << ": "
-                 << tok.getName() << "\n";
-  }
-}
