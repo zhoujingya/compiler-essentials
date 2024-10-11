@@ -3,7 +3,7 @@ project(tinylang)
 include(HandleLLVMOptions)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
-
+include(AddTinylang)
 include_directories(BEFORE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(TINYLANG_VERSION_STRING "0.1")
 

@@ -1,5 +1,8 @@
 
 file(GLOB SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
-add_library(tinylangBasic SHARED ${SOURCE})
 
-target_link_libraries(tinylangBasic PRIVATE LLVMCore LLVMSupport)
+set(LLVM_LINK_COMPONENTS core support)
+add_tinylang_library(tinylangBasic
+  ${SOURCE}
+)
+
