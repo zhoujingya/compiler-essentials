@@ -3,7 +3,7 @@
 file(GLOB SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
 set(LLVM_LINK_COMPONENTS Core Support)
-add_tinylang_library(inylangParser
+add_tinylang_library(tinylangParser
   ${SOURCE}
 
   LINK_LIBS
