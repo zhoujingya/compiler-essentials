@@ -11,5 +11,9 @@ path = "src/hello_world.rs"
 name = "guess_number"
 path = "src/guess_number.rs"
 
+[[bin]]
+name = "common_sense"
+path = "src/common_sense.rs"
+
 [dependencies]
 rand = "0.8.5"
