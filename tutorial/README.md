@@ -34,3 +34,9 @@ Example of optrimization:
   * Effect of flow of control:
     * relates out[b], in[b’] if b and b’ are <font color='red'>adjacent</font>
     * Find a solution to the equations
+
+
+## Support intrinsics
+
+* llvm/include/llvm/IR/Intrinsics.td
+* clang/include/clang/Basic/Builtins.def
