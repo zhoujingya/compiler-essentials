@@ -5,6 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "cmake",
+      "request": "launch",
+      "name": "AddTinylang cmake debugger",
+      "cmakeDebugType": "script",
+      "scriptPath": "${workspaceFolder}/src/tinylang/cmake/modules/AddTinylang.cmake"
+    },
+
+    {
       "type": "lldb",
       "request": "launch",
       "name": "lexer driver",
