@@ -19,5 +19,9 @@ path = "src/common_sense.rs"
 name = "owner_ship"
 path = "src/ownership.rs"
 
+[[bin]]
+name = "enum"
+path = "src/enum.rs"
+
 [dependencies]
 rand = "0.8.5"
