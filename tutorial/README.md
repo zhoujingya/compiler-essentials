@@ -40,3 +40,15 @@ Example of optrimization:
 
 * llvm/include/llvm/IR/Intrinsics.td
 * clang/include/clang/Basic/Builtins.def
+
+## Big endian and little endian
+
+Value: `0x01234567`
+
+0x100, 0x101, 0x102, 0x103 ...
+
+Big endian: `01 23 45 67`
+
+Little endian: `67 45 23 01`
+
+## 
