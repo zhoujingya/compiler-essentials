@@ -55,7 +55,7 @@ llvm_config.add_tool_substitutions(tool_substitutions)
 # during configuration (i.e. LT_LLVM_TOOLS_DIR/bin)
 tools = ["opt", "lli", "not", "FileCheck", "clang"]
 llvm_config.add_tool_substitutions(tools, config.llvm_tools_dir)
-llvm_config.add_tool_substitutions(["commandline", "smallcc", "tinylang-lexer"], config.bin_dir)
+llvm_config.add_tool_substitutions(["commandline", "smallcc", "tinylang-lexer", "jit", "tinylang-parser"], config.bin_dir)
 llvm_config.add_tool_substitutions(["qemu-riscv64", "riscv64-unknown-linux-gnu-gcc"], config.rv_bin_dir)
 # The LIT variable to hold the file extension for shared libraries (this is
 # platform dependent)

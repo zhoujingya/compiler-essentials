@@ -7,15 +7,23 @@
     {
       "type": "cmake",
       "request": "launch",
-      "name": "AddTinylang cmake debugger",
+      "name": "Cmake debugger",
       "cmakeDebugType": "script",
-      "scriptPath": "${workspaceFolder}/src/tinylang/cmake/modules/AddTinylang.cmake"
+      // Hold on this to modify cmake
+      "scriptPath": "${workspaceFolder}/src/jit/CMakeLists.txt"
     },
-
     {
       "type": "lldb",
       "request": "launch",
       "name": "lexer driver",
+      "program": "${workspaceFolder}/build/bin/tinylang-lexer",
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Parser driver",
       "program": "${workspaceFolder}/build/bin/tinylang-lexer",
       "args": [],
       "cwd": "${workspaceFolder}"
@@ -34,6 +42,14 @@
       "name": "smallcc",
       "program": "${workspaceFolder}/build/bin/smallcc",
       "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "jit",
+      "program": "${workspaceFolder}/build/bin/jit",
+      "args": ["${workspaceFolder}/test/jit/hello-world.ll"],
       "cwd": "${workspaceFolder}"
     }
   ]
