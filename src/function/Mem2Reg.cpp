@@ -13,11 +13,11 @@ namespace {
 class Mem2RegPromoter {
 private:
   // Record all stores used by each alloca
-  std::map<AllocaInst *, std::vector<StoreInst *>> allocaStores;
+  DenseMap<AllocaInst *, std::vector<StoreInst *>> allocaStores;
   // Record all loads used by each alloca
-  std::map<AllocaInst *, std::vector<LoadInst *>> allocaLoads;
+  DenseMap<AllocaInst *, std::vector<LoadInst *>> allocaLoads;
   // Record phi nodes for each basic block
-  std::map<BasicBlock *, std::map<AllocaInst *, PHINode *>> blockPhis;
+  DenseMap<BasicBlock *, DenseMap<AllocaInst *, PHINode *>> blockPhis;
 
   // Check if an alloca is promotable
   bool isPromotable(AllocaInst *AI) {
@@ -89,7 +89,7 @@ private:
   // Rewrite all loads and stores
   void rewriteLoadAndStores(AllocaInst *AI) {
     // Create a mapping to track the value each load should use
-    std::map<LoadInst *, Value *> loadToValue;
+    DenseMap<LoadInst *, Value *> loadToValue;
 
     // First, find the store value for each load
     for (LoadInst *LI : allocaLoads[AI]) {

@@ -7,6 +7,7 @@ Driver for TableGen.
 #include "llvm/TableGen/Record.h"
 #include "llvm/Support/Signals.h"
 #include "llvm/Support/PrettyStackTrace.h"
+#include "llvm/Support/ManagedStatic.h"
 
 using namespace llvm;
 
