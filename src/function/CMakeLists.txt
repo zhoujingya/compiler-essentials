@@ -4,3 +4,5 @@ add_library(Mem2Reg SHARED Mem2Reg.cpp)
 
 target_link_libraries(HelloWorld
   "$<$<PLATFORM_ID:Darwin>:-undefined dynamic_lookup>")
+target_link_libraries(Mem2Reg
+  "$<$<PLATFORM_ID:Darwin>:-undefined dynamic_lookup>")
