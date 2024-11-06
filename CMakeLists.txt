@@ -26,7 +26,8 @@ message("LLVM library directory: " ${LLVM_LIBRARY_DIRS})
 message("LLVM install path: " ${LLVM_INSTALL_PREFIX})
 set(LLVM_DIR ${LLVM_INSTALL_PREFIX})
 add_definitions(${LLVM_DEFINITIONS})
-
+link_directories(${LLVM_LIBRARY_DIRS})
+include_directories(SYSTEM ${LLVM_INCLUDE_DIRS})
 # Find clang path
 # Solution1: set search pat
 set (search_paths
@@ -70,4 +71,4 @@ include(GoogleTest)
 enable_testing()
 add_subdirectory(src)
 add_subdirectory(test)
-add_subdirectory(tools/my-exegesis)
+add_subdirectory(tools)
