@@ -22,8 +22,8 @@ void main() {
       "please provide one and only one of 'opcode-index' or 'opcode-name' ");
   }
 
-  InitializeNativeTarget();
-  InitializeNativeTargetAsmPrinter();
+  LLVMInitializeX86Target();
+  LLVMInitializeX86AsmPrinter();
 
   // FIXME: Target-specific filter.
   // X86Filter Filter;

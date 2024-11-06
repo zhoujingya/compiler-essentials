@@ -28,6 +28,6 @@ separate_arguments(LLVM_DEFINITIONS_LIST NATIVE_COMMAND ${LLVM_DEFINITIONS})
 add_definitions(${LLVM_DEFINITIONS_LIST})
 message(STATUS "Add LLVM Definition: ${LLVM_DEFINITIONS_LIST}")
 
-llvm_map_components_to_libnames(llvm_libs support native X86AsmParser X86CodeGen X86Info)
+llvm_map_components_to_libnames(llvm_libs support X86)
 target_link_libraries(my-exegesis PRIVATE ${llvm_libs} MyExegesis)
 message(STATUS "Add LLVM Libs: ${llvm_libs}")
