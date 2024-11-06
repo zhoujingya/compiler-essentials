@@ -39,7 +39,7 @@ jobs:
       run: |
         cd ${{github.workspace}}/llvm-essential
         export PATH=/usr/lib/llvm-$VERSION/bin:$PATH
-        cmake -B build -S . -DHOME=$HOME
+        cmake -B build -S . -DHOME=$HOME -DENABLE_SMALL_CC=ON
         cmake --build build
 
     - name: Start lit test
