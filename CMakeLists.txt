@@ -3,7 +3,12 @@ project(compiler-essential
         VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_LINKER mold)
+# check if mold is installed
+find_program(MOLD_PATH NAMES mold)
+if(MOLD_PATH)
+    message(STATUS "Mold is installed, using mold as linker")
+    set(CMAKE_LINKER mold)
+endif()
 
 # Replace the existing gc-sections flags with platform-specific ones
 if (APPLE)
