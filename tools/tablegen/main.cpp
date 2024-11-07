@@ -3,12 +3,12 @@ Driver for TableGen.
 */
 
 #include "llvm/TableGen/Main.h"
+#include "TinyTablegenEmitter.h"
 #include "llvm/Support/CommandLine.h"
-#include "llvm/TableGen/Record.h"
-#include "llvm/Support/Signals.h"
-#include "llvm/Support/PrettyStackTrace.h"
 #include "llvm/Support/ManagedStatic.h"
-
+#include "llvm/Support/PrettyStackTrace.h"
+#include "llvm/Support/Signals.h"
+#include "llvm/TableGen/Record.h"
 using namespace llvm;
 
 enum ActionType {
@@ -29,17 +29,16 @@ cl::opt<ActionType>
                                  "filter")));
 
 bool Main(raw_ostream &OS, RecordKeeper &Records) {
+  tinytblgen::Emitter Emitter(OS, Records);
   switch (Action) {
   case PrintRecords:
     OS << Records; // No argument, dump all contents
     break;
   case DumpJSON:
-    // TODO:EmitJSON(Records, OS);
-    OS << "DumpJSON" << "\n";
+    EmitJSON(Records, OS);
     break;
   case GenTokens:
-    // TODO:EmitTokensAndKeywordFilter(Records, OS);
-    OS << "GenTokens" << "\n";
+    Emitter.EmitTokensAndKeywordFilter(OS, Records);
     break;
   }
 
