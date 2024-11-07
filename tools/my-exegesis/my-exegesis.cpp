@@ -26,7 +26,7 @@ void main() {
   LLVMInitializeX86AsmPrinter();
 
   // FIXME: Target-specific filter.
-  // X86Filter Filter;
+  X86Filter Filter;
   
   return;
 }

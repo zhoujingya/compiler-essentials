@@ -31,7 +31,7 @@ private:
   std::unique_ptr<LLVMContext> Context;
   std::unique_ptr<LLVMTargetMachine> TM;
   std::unique_ptr<MachineModuleInfo> MMI;
-  std::unique_ptr<Module> JitModule;
+  std::unique_ptr<llvm::Module> Module;
   MachineFunction *MF = nullptr;
   BitVector ReservedRegs;
 };

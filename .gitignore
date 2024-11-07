@@ -35,3 +35,5 @@ build
 .venv
 
 rust/target
+
+test/lit.site.cfg.py
