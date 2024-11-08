@@ -24,7 +24,7 @@ config.test_format = lit.formats.ShTest(not llvm_config.use_lit_shell)
 
 # suffixes: A list of file extensions to treat as test files. This is overriden
 # by individual lit.local.cfg files in the test subdirectories.
-config.suffixes = [".ll", ".c", ".cpp", ".tiny", ".td"]
+config.suffixes = [".ll", ".c", ".cpp", ".tiny", ".mlir", ".toy", ".td"]
 
 # test_source_root: The root path where tests are located.
 config.test_source_root = os.path.dirname(__file__)
@@ -64,7 +64,14 @@ llvm_config.add_tool_substitutions(tool_substitutions)
 tools = ["opt", "lli", "not", "FileCheck", "clang"]
 llvm_config.add_tool_substitutions(tools, config.llvm_tools_dir)
 llvm_config.add_tool_substitutions(
-    ["commandline", "tinylang-lexer", "jit", "tinylang-parser", "tiny-tblgen"],
+    [
+        "commandline",
+        "tinylang-lexer",
+        "jit",
+        "tinylang-parser",
+        "tiny-tblgen",
+        "mlir-toy",
+    ],
     config.bin_dir,
 )
 llvm_config.add_tool_substitutions(

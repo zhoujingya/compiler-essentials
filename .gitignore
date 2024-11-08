@@ -36,4 +36,4 @@ build
 
 rust/target
 
-test/lit.site.cfg.py
+lit.site.cfg.py

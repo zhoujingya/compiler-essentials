@@ -1,0 +1,6 @@
+set(LLVM_TARGET_DEFINITIONS StandaloneDialect.td)
+mlir_tablegen(StandaloneOps.h.inc -gen-op-decls)
+mlir_tablegen(StandaloneOps.cpp.inc -gen-op-defs)
+mlir_tablegen(StandaloneDialect.h.inc -gen-dialect-decls)
+mlir_tablegen(StandaloneDialect.cpp.inc -gen-dialect-defs)
+add_public_tablegen_target(StandaloneOpsIncGen)
