@@ -15,7 +15,7 @@ using namespace llvm;
 
 namespace myexegesis {
 LLVMState::LLVMState()
-    : TheTriple(sys::getProcessTriple()), CpuName(sys::getHostCPUName().str()) {
+    : TheTriple(sys::getProcessTriple()), CpuName(sys::getHostCPUName()) {
   std::string Error;
   TheTarget = TargetRegistry::lookupTarget(getTripleString(), Error);
   assert(TheTarget && "unknown target for host");

@@ -25,6 +25,7 @@ public:
   JitFunctionContext(const JitFunctionContext &) = delete;
   JitFunctionContext &operator=(const JitFunctionContext &) = delete;
 
+  const llvm::BitVector &getReservedRegs() const { return ReservedRegs; }
 private:
   friend class JitFunction;
 

@@ -1,8 +1,8 @@
-#include "LlvmState.h"
 #include "BenchmarkResult.h"
 #include "InMemoryAssembler.h"
-#include "llvm/Support/Error.h"
+#include "LlvmState.h"
 #include "llvm/MC/MCInst.h"
+#include "llvm/Support/Error.h"
 
 #ifndef LLVM_TOOLS_LLVM_EXEGESIS_BENCHMARKRUNNER_H
 #define LLVM_TOOLS_LLVM_EXEGESIS_BENCHMARKRUNNER_H
@@ -33,7 +33,7 @@ public:
 private:
   virtual const char *getDisplayName() const = 0;
 
-  virtual llvm::Expected<std::vector<MCInst>>
+  virtual Expected<std::vector<MCInst>>
   createCode(const LLVMState &State, unsigned OpcodeIndex,
              unsigned NumRepetitions,
              const JitFunctionContext &Context) const = 0;

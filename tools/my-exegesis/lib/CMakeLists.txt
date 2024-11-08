@@ -3,7 +3,10 @@ cmake_minimum_required(VERSION 3.15)
 project(LIBPFM)
 
 add_library(MyExegesis STATIC PerfHelper.cpp LlvmState.cpp BenchmarkResult.cpp
-                              InMemoryAssembler.cpp X86.cpp BenchmarkRunner.cpp)
+                              InMemoryAssembler.cpp X86.cpp BenchmarkRunner.cpp
+                              InstructionSnippetGenerator.cpp OperandGraph.cpp
+                              LatencyBenchmarkRunner.cpp
+                              UopsBenchmarkRunner.cpp)
 
 if(PFM_PATH)
   message(STATUS "Set PFM_PATH: ${PFM_PATH}")
