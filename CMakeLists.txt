@@ -77,4 +77,7 @@ include(GoogleTest)
 enable_testing()
 add_subdirectory(src)
 add_subdirectory(test)
-add_subdirectory(tools)
+# Check LLVM version <= 18
+if(LLVM_VERSION VERSION_LESS 18.0)
+  add_subdirectory(tools)
+endif()
