@@ -1,5 +1,5 @@
 // RUN: tiny-tblgen -gen-tokens %s | FileCheck %s
-
+// REQUIRES: tiny-tblgen
 //CHECK:{
 //CHECK-NEXT:  "tokens": [
 //CHECK-NEXT:    {

@@ -69,7 +69,6 @@ llvm_config.add_tool_substitutions(
         "tinylang-lexer",
         "jit",
         "tinylang-parser",
-        "tiny-tblgen",
         "mlir-toy",
     ],
     config.bin_dir,
@@ -94,3 +93,7 @@ config.substitutions.append(("%utils_path", utils_path))
 if config.enable_small_cc:
     llvm_config.add_tool_substitutions(["smallcc"], config.bin_dir)
     config.available_features.add("smallcc")
+
+if config.LLVM_VERSION < "18.1.8":
+    llvm_config.add_tool_substitutions(["tiny-tblgen"], config.bin_dir)
+    config.available_features.add("tiny-tblgen")
