@@ -14,3 +14,6 @@
 [submodule "third-party/musl"]
 	path = third-party/musl
 	url = https://github.com/zhoujingya/musl.git
+[submodule "third-party/TinyInfiniTens"]
+	path = third-party/TinyInfiniTens
+	url = https://github.com/zhoujingya/TinyInfiniTensor
