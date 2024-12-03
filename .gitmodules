@@ -17,3 +17,6 @@
 [submodule "third-party/TinyInfiniTens"]
 	path = third-party/TinyInfiniTens
 	url = https://github.com/zhoujingya/TinyInfiniTensor
+[submodule "third-party/miniMNIST-mojo"]
+	path = third-party/miniMNIST-mojo
+	url = https://github.com/zhoujingya/miniMNIST-mojo
