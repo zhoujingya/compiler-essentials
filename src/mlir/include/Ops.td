@@ -270,6 +270,7 @@ def MulOp : Toy_Op<"mul",
   // Indicate that the operation has a custom parser and printer method.
   let hasCustomAssemblyFormat = 1;
 
+
   // Allow building a MulOp with from the two input operands.
   let builders = [
     OpBuilder<(ins "Value":$lhs, "Value":$rhs)>
@@ -446,6 +447,23 @@ def TransposeOp : Toy_Op<"transpose",
 
   // Indicate that additional verification for this operation is necessary.
   let hasVerifier = 1;
+}
+
+//===----------------------------------------------------------------------===//
+// MulAddOp
+//===----------------------------------------------------------------------===//
+
+def MulAddOp : Toy_Op<"muladd", [Pure]> {
+  let summary = "element-wise muladd operation";
+  let description = [{
+    The "muladd" operation performs element-wise muladd between two tensors.
+    The shapes of the tensor operands are expected to match.
+  }];
+
+  let arguments = (ins F64Tensor:$lhs, F64Tensor:$rhs, F64Tensor:$mul);
+  let results = (outs F64Tensor);
+
+  let hasCanonicalizer = 1;
 }
 
 #endif // TOY_OPS

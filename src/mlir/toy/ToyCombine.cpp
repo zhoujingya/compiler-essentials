@@ -66,3 +66,8 @@ void ReshapeOp::getCanonicalizationPatterns(RewritePatternSet &results,
   results.add<ReshapeReshapeOptPattern, RedundantReshapeOptPattern,
               FoldConstantReshapeOptPattern>(context);
 }
+
+void MulAddOp::getCanonicalizationPatterns(RewritePatternSet &results,
+                                            MLIRContext *context) {
+  results.add<MulAddOptPattern>(context);
+}
