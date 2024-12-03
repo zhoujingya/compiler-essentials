@@ -454,15 +454,19 @@ def TransposeOp : Toy_Op<"transpose",
 //===----------------------------------------------------------------------===//
 
 def MulAddOp : Toy_Op<"muladd", [Pure]> {
-  let summary = "element-wise muladd operation";
+  let summary = "muladd operation";
   let description = [{
-    The "muladd" operation performs element-wise muladd between two tensors.
-    The shapes of the tensor operands are expected to match.
+    The "muladd" operation performs a multiply and add.
   }];
 
-  let arguments = (ins F64Tensor:$lhs, F64Tensor:$rhs, F64Tensor:$mul);
-  let results = (outs F64Tensor);
+  let arguments = (ins F64Tensor:$lhs, F64Tensor:$rhs, F64Tensor:$val);
+  let results = (outs F64Tensor:$output);
 
+  let hasCustomAssemblyFormat = 1;
+  // Define custom assembly format
+  let assemblyFormat = [{
+    $lhs `:` type($lhs) `,` $rhs `:` type($rhs) `,` $val `:` type($val) attr-dict `->` type($output)
+  }];
   let hasCanonicalizer = 1;
 }
 

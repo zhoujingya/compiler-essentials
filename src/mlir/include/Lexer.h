@@ -36,6 +36,10 @@ enum Token : int {
   // primary
   tok_identifier = -5,
   tok_number = -6,
+
+  // condition
+  tok_if = -8,
+  tok_else = -9,
 };
 
 /// The Lexer is an abstract base class providing all the facilities that the
@@ -130,12 +134,16 @@ private:
 
       if (identifierStr == "return")
         return tok_return;
-      if (identifierStr == "def")
+      else if (identifierStr == "def")
         return tok_def;
-      if (identifierStr == "var")
+      else if (identifierStr == "var")
         return tok_var;
-      if (identifierStr == "int")
+      else if (identifierStr == "int")
         return tok_int;
+      else if (identifierStr == "if")
+        return tok_if;
+      else if (identifierStr == "else")
+        return tok_else;
       return tok_identifier;
     }
 

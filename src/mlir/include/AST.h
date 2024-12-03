@@ -44,6 +44,7 @@ public:
     Expr_BinOp,
     Expr_Call,
     Expr_Print,
+    Expr_If,
   };
 
   ExprAST(ExprASTKind kind, Location location)
@@ -214,6 +215,27 @@ public:
 
   /// LLVM style RTTI
   static bool classof(const ExprAST *c) { return c->getKind() == Expr_Print; }
+};
+
+/// Expression class for if/else statements
+class IfExprAST : public ExprAST {
+  std::unique_ptr<ExprAST> condition;
+  std::unique_ptr<ExprASTList> thenBlock;
+  std::unique_ptr<ExprASTList> elseBlock;
+
+public:
+  IfExprAST(Location loc, std::unique_ptr<ExprAST> condition,
+            std::unique_ptr<ExprASTList> thenBlock,
+            std::unique_ptr<ExprASTList> elseBlock)
+      : ExprAST(Expr_If, std::move(loc)), condition(std::move(condition)),
+        thenBlock(std::move(thenBlock)), elseBlock(std::move(elseBlock)) {}
+
+  ExprAST *getCondition() { return condition.get(); }
+  ExprASTList *getThenBlock() { return thenBlock.get(); }
+  ExprASTList *getElseBlock() { return elseBlock.get(); }
+
+  /// LLVM style RTTI
+  static bool classof(const ExprAST *c) { return c->getKind() == Expr_If; }
 };
 
 /// This class represents the "prototype" for a function, which captures its
