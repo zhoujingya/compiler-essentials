@@ -32,8 +32,8 @@ include "include/Ops.td"
 // Reshape(Reshape(x)) = Reshape(x)
 def ReshapeReshapeOptPattern : Pat<(ReshapeOp(ReshapeOp $arg)),
                                    (ReshapeOp $arg)>;
-// (mul(add(x, y), z)) -> (muladd(x, y, z))
-def MulAddOptPattern : Pat<(MulOp (AddOp $lhs, $rhs), $mul),
+// (add(mul(x, y), z)) -> (muladd(x, y, z))
+def MulAddOptPattern : Pat<(AddOp (MulOp $lhs, $rhs), $mul),
                                    (MulAddOp $lhs, $rhs, $mul)>;
 
 //===----------------------------------------------------------------------===//
