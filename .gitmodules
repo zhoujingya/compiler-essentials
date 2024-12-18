@@ -20,3 +20,6 @@
 [submodule "third-party/miniMNIST-mojo"]
 	path = third-party/miniMNIST-mojo
 	url = https://github.com/zhoujingya/miniMNIST-mojo
+[submodule "third-party/rustlings"]
+	path = third-party/rustlings
+	url = https://github.com/zhoujingya/rustlings
