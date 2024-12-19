@@ -23,3 +23,6 @@
 [submodule "third-party/rustlings"]
 	path = third-party/rustlings
 	url = https://github.com/zhoujingya/rustlings
+[submodule "third-party/GPU-Puzzles"]
+	path = third-party/GPU-Puzzles
+	url = https://github.com/zhoujingya/GPU-Puzzles.git
