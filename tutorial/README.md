@@ -51,4 +51,6 @@ Big endian: `01 23 45 67`
 
 Little endian: `67 45 23 01`
 
-## 
+## 新支持一个架构后端的CPU型号
+
+- [Hexgon](https://github.com/llvm/llvm-project/commit/8b37c1c71bf6)
