@@ -24,7 +24,7 @@ jobs:
         wget https://apt.llvm.org/llvm.sh
         chmod +x llvm.sh
         sudo ./llvm.sh $VERSION
-        sudo apt install -y libclang-$VERSION-dev
+        sudo apt install -y libclang-$VERSION-dev mlir-$VERSION-tools libmlir-$VERSION-dev
 
     - name: Preparing environment
       run: |
