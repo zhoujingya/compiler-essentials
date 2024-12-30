@@ -67,7 +67,35 @@ void ReshapeOp::getCanonicalizationPatterns(RewritePatternSet &results,
               FoldConstantReshapeOptPattern>(context);
 }
 
-void MulAddOp::getCanonicalizationPatterns(RewritePatternSet &results,
-                                            MLIRContext *context) {
-  results.add<MulAddOptPattern>(context);
+
+/// Pattern to convert add(mul(x,y), z) to muladd(x,y,z)
+struct MulAddPattern : public mlir::OpRewritePattern<toy::AddOp> {
+  MulAddPattern(mlir::MLIRContext *context)
+      : OpRewritePattern<toy::AddOp>(context, /*benefit=*/1) {}
+
+  mlir::LogicalResult
+  matchAndRewrite(toy::AddOp addOp,
+                  mlir::PatternRewriter &rewriter) const override {
+    // Try to get the defining operation of the first operand of add
+    auto mulOp = addOp.getLhs().getDefiningOp<toy::MulOp>();
+    if (!mulOp)
+      return failure();
+
+    // Create new muladd operation
+    rewriter.replaceOpWithNewOp<toy::MulAddOp>(
+        addOp,                    // operation to replace
+        addOp.getType(),         // result type
+        mulOp.getLhs(),          // first operand (x)
+        mulOp.getRhs(),          // second operand (y)
+        addOp.getRhs()           // third operand (z)
+    );
+
+    return success();
+  }
+};
+
+// Register this pattern in AddOp's canonicalization patterns
+void AddOp::getCanonicalizationPatterns(RewritePatternSet &results,
+                                       MLIRContext *context) {
+  results.add<MulAddPattern>(context);
 }

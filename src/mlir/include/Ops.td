@@ -127,7 +127,7 @@ def AddOp : Toy_Op<"add",
 
   // Indicate that the operation has a custom parser and printer method.
   let hasCustomAssemblyFormat = 1;
-
+  let hasCanonicalizer = 1;
   // Allow building an AddOp with from the two input operands.
   let builders = [
     OpBuilder<(ins "Value":$lhs, "Value":$rhs)>
@@ -467,7 +467,6 @@ def MulAddOp : Toy_Op<"muladd", [Pure]> {
   let assemblyFormat = [{
     $lhs `:` type($lhs) `,` $rhs `:` type($rhs) `,` $val `:` type($val) attr-dict `->` type($output)
   }];
-  let hasCanonicalizer = 1;
 }
 
 #endif // TOY_OPS
