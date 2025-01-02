@@ -398,6 +398,24 @@ mlir::ParseResult MulOp::parse(mlir::OpAsmParser &parser,
 
 void MulOp::print(mlir::OpAsmPrinter &p) { printBinaryOp(p, *this); }
 
+//===----------------------------------------------------------------------===//
+// DivOp
+//===----------------------------------------------------------------------===//
+
+void DivOp::build(mlir::OpBuilder &builder, mlir::OperationState &state,
+                  mlir::Value lhs, mlir::Value rhs) {
+  state.addTypes(UnrankedTensorType::get(builder.getF64Type()));
+  state.addOperands({lhs, rhs});
+}
+
+mlir::ParseResult DivOp::parse(mlir::OpAsmParser &parser,
+                               mlir::OperationState &result) {
+  return parseBinaryOp(parser, result);
+}
+
+void DivOp::print(mlir::OpAsmPrinter &p) { printBinaryOp(p, *this); }
+
+
 /// Infer the output shape of the MulOp, this is required by the shape inference
 /// interface.
 // void MulOp::inferShapes() { getResult().setType(getLhs().getType()); }
