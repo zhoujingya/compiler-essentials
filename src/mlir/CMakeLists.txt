@@ -1,6 +1,7 @@
 project(mlir-learning VERSION 1.0.0)
 
 # Find mlir
+set (MLIR_DIR ${LLVM_INSTALL_PREFIX}/lib/cmake/mlir)
 find_package(MLIR REQUIRED CONFIG)
 message(STATUS "Found MLIR: " ${MLIR_FOUND})
 message(STATUS "MLIR_PACKAGE_VERSION: " ${MLIR_VERSION})
