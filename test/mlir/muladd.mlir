@@ -1,7 +1,8 @@
-// RUN: mlir-toy %s -emit=mlir  -opt=true 2>&1 | FileCheck  %s
+// RUN: mlir-toy %s -emit=mlir -opt 2>&1 | FileCheck  %s
+// RUN: mlir-toy %s -emit=run-jit 2>&1 | FileCheck -check-prefix=RUN-JIT %s
 
 //CHECK: module {
-//CHECK-NEXT:   toy.func @muladd() {
+//CHECK-NEXT:   toy.func @main() {
 //CHECK-NEXT:     %0 = toy.constant dense<1.000000e+00> : tensor<f64>
 //CHECK-NEXT:     %1 = toy.constant dense<2.000000e+00> : tensor<f64>
 //CHECK-NEXT:     %2 = toy.constant dense<3.000000e+00> : tensor<f64>
@@ -12,7 +13,7 @@
 //CHECK-NEXT:   }
 //CHECK-NEXT: }
 
-toy.func @muladd() {
+toy.func @main() {
   %0 = toy.constant dense<1.0> : tensor<f64>
   %1 = toy.constant dense<2.0> : tensor<f64>
   %2 = toy.constant dense<3.0> : tensor<f64>
@@ -22,3 +23,5 @@ toy.func @muladd() {
   toy.print %5 : tensor<f64>
   toy.return
 }
+
+// RUN-JIT: 7.000000

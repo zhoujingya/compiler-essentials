@@ -1,4 +1,5 @@
 // RUN: mlir-toy %s --emit=mlir-affine 2>&1 | FileCheck  %s
+// RUN: mlir-toy %s -emit=run-jit 2>&1 | FileCheck -check-prefix=RUN-JIT %s
 toy.func @main() {
   %0 = toy.constant dense<[[1.000000e+00, 2.000000e+00, 3.000000e+00], [4.000000e+00, 5.000000e+00, 6.000000e+00]]> : tensor<2x3xf64>
   %2 = toy.transpose(%0 : tensor<2x3xf64>) to tensor<3x2xf64>
@@ -44,3 +45,7 @@ toy.func @main() {
 // CHECK-NEXT:     return
 // CHECK-NEXT:   }
 // CHECK-NEXT: }
+
+// RUN-JIT: 1.000000 16.000000
+// RUN-JIT-NEXT: 4.000000 25.000000
+// RUN-JIT-NEXT: 9.000000 36.000000

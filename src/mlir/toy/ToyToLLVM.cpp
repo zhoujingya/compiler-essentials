@@ -1,4 +1,4 @@
-//====- LowerToLLVM.cpp - Lowering from Toy+Affine+Std to LLVM ------------===//
+//===- LowerToLLVM.cpp - Lowering from Toy+Affine+Std to LLVM -------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -54,6 +54,16 @@ namespace {
 /// Lowers `toy.print` to a loop nest calling `printf` on each of the individual
 /// elements of the array.
 class PrintOpLowering : public ConversionPattern {
+  /// Create a function declaration for printf, the signature is:
+  ///   * `i32 (i8*, ...)`
+  static LLVM::LLVMFunctionType getPrintfType(MLIRContext *context) {
+    auto llvmI32Ty = IntegerType::get(context, 32);
+    auto llvmPtrTy = LLVM::LLVMPointerType::get(context);
+    auto llvmFnType = LLVM::LLVMFunctionType::get(llvmI32Ty, llvmPtrTy,
+                                                  /*isVarArg=*/true);
+    return llvmFnType;
+  }
+
 public:
   explicit PrintOpLowering(MLIRContext *context)
       : ConversionPattern(toy::PrintOp::getOperationName(), 1, context) {}
@@ -61,6 +71,7 @@ public:
   LogicalResult
   matchAndRewrite(Operation *op, ArrayRef<Value> operands,
                   ConversionPatternRewriter &rewriter) const override {
+    auto *context = rewriter.getContext();
     auto memRefType = llvm::cast<MemRefType>((*op->operand_type_begin()));
     auto memRefShape = memRefType.getShape();
     auto loc = op->getLoc();
@@ -74,12 +85,6 @@ public:
     Value newLineCst = getOrCreateGlobalString(
         loc, rewriter, "nl", StringRef("\n\0", 2), parentModule);
 
-    Value helloWorld = getOrCreateGlobalString(
-        loc, rewriter, "hello_world", StringRef("Hello world\n", 18), parentModule);
-    //需要获取hello world的首地址
-
-    rewriter.create<mlir::LLVM::CallOp>(loc, rewriter.getIntegerType(32),
-                                        printfRef, helloWorld);
     // Create a loop for each of the dimensions within the shape.
     SmallVector<Value, 4> loopIvs;
     for (unsigned i = 0, e = memRefShape.size(); i != e; ++i) {
@@ -98,8 +103,8 @@ public:
 
       // Insert a newline after each of the inner dimensions of the shape.
       if (i != e - 1)
-        rewriter.create<func::CallOp>(loc, printfRef,
-                                      rewriter.getIntegerType(32), newLineCst);
+        rewriter.create<LLVM::CallOp>(loc, getPrintfType(context), printfRef,
+                                      newLineCst);
       rewriter.create<scf::YieldOp>(loc);
       rewriter.setInsertionPointToStart(loop.getBody());
     }
@@ -108,8 +113,8 @@ public:
     auto printOp = cast<toy::PrintOp>(op);
     auto elementLoad =
         rewriter.create<memref::LoadOp>(loc, printOp.getInput(), loopIvs);
-    rewriter.create<func::CallOp>(
-        loc, printfRef, rewriter.getIntegerType(32),
+    rewriter.create<LLVM::CallOp>(
+        loc, getPrintfType(context), printfRef,
         ArrayRef<Value>({formatSpecifierCst, elementLoad}));
 
     // Notify the rewriter that this operation has been removed.
@@ -129,7 +134,6 @@ private:
     // Create a function declaration for printf, the signature is:
     //   * `i32 (i8*, ...)`
     auto llvmI32Ty = IntegerType::get(context, 32);
-    auto llvmI8Ty = IntegerType::get(context, 8);
     auto llvmI8PtrTy = LLVM::LLVMPointerType::get(context);
     auto llvmFnType = LLVM::LLVMFunctionType::get(llvmI32Ty, llvmI8PtrTy,
                                                   /*isVarArg=*/true);
@@ -163,15 +167,21 @@ private:
     Value globalPtr = builder.create<LLVM::AddressOfOp>(loc, global);
     Value cst0 = builder.create<LLVM::ConstantOp>(loc, builder.getI64Type(),
                                                   builder.getIndexAttr(0));
-    return builder.create<LLVM::GEPOp>(
-        loc,
-        LLVM::LLVMPointerType::get(builder.getContext()),
-        IntegerType::get(builder.getContext(), 8),
-        globalPtr,
-        ArrayRef<Value>({cst0, cst0}),
-        /*inbounds=*/false);
+
+    // Create a GEP operation to get pointer to the string.
+    auto i8Type = IntegerType::get(builder.getContext(), 8);
+    auto i8PtrTy = LLVM::LLVMPointerType::get(builder.getContext());
+    return builder.create<LLVM::GEPOp>(loc,                     // location
+                                       i8PtrTy,                 // result type
+                                       i8Type,                  // element type
+                                       globalPtr,               // base pointer
+                                       ArrayRef<Value>({cst0}), // indices
+                                       /*inbounds=*/false       // bounds checking
+    );
   }
 };
+
+
 } // namespace
 
 //===----------------------------------------------------------------------===//
