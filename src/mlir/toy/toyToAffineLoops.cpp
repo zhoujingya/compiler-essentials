@@ -12,9 +12,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "mlir/IR/BuiltinDialect.h"
 #include "Dialect.h"
 #include "Passes.h"
+#include "mlir/IR/BuiltinDialect.h"
 
 #include "mlir/Dialect/Affine/IR/AffineOps.h"
 #include "mlir/Dialect/Arith/IR/Arith.h"
@@ -242,9 +242,8 @@ struct PrintOpLowering : public OpConversionPattern<toy::PrintOp> {
                   ConversionPatternRewriter &rewriter) const final {
     // We don't lower "toy.print" in this pass, but we need to update its
     // operands.
-    rewriter.modifyOpInPlace(op, [&] {
-      op->setOperands(adaptor.getOperands());
-    });
+    rewriter.modifyOpInPlace(op,
+                             [&] { op->setOperands(adaptor.getOperands()); });
 
     return success();
   }
@@ -301,6 +300,40 @@ struct TransposeOpLowering : public ConversionPattern {
   }
 };
 
+class MulAddOpLowering : public ConversionPattern {
+public:
+  explicit MulAddOpLowering(MLIRContext *context)
+      : ConversionPattern(toy::MulAddOp::getOperationName(), 1, context) {}
+
+  LogicalResult
+  matchAndRewrite(Operation *op, ArrayRef<Value> operands,
+                  ConversionPatternRewriter &rewriter) const override {
+    auto loc = op->getLoc();
+
+    // For scalar memref, load directly without indices
+    memref::LoadOp loadLhs = rewriter.create<memref::LoadOp>(loc, operands[0]);
+    memref::LoadOp loadRhs = rewriter.create<memref::LoadOp>(loc, operands[1]);
+    memref::LoadOp loadAdd = rewriter.create<memref::LoadOp>(loc, operands[2]);
+
+    // Perform multiplication and addition operations
+    auto mulResult = rewriter.create<arith::MulFOp>(loc, loadLhs, loadRhs);
+    auto addResult = rewriter.create<arith::AddFOp>(loc, mulResult, loadAdd);
+
+    // Allocate memory for result
+    auto resultType = convertTensorToMemRef(
+        cast<RankedTensorType>(op->getResult(0).getType()));
+    auto alloc = insertAllocAndDealloc(resultType, loc, rewriter);
+
+    // Store result, no indices needed
+    rewriter.create<memref::StoreOp>(loc, addResult, alloc);
+
+    // Replace original operation
+    rewriter.replaceOp(op, alloc);
+
+    return success();
+  }
+};
+
 } // namespace
 
 //===----------------------------------------------------------------------===//
@@ -351,8 +384,8 @@ void ToyToAffineLoweringPass::runOnOperation() {
   // the set of patterns that will lower the Toy operations.
   RewritePatternSet patterns(&getContext());
   patterns.add<AddOpLowering, ConstantOpLowering, FuncOpLowering, MulOpLowering,
-               PrintOpLowering, ReturnOpLowering, TransposeOpLowering>(
-      &getContext());
+               PrintOpLowering, ReturnOpLowering, TransposeOpLowering,
+               MulAddOpLowering>(&getContext());
 
   // With the target and rewrite patterns defined, we can now attempt the
   // conversion. The conversion will signal failure if any of our `illegal`
