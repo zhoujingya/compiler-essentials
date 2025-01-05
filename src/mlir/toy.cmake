@@ -13,10 +13,12 @@ add_mlir_library(toy
     toy/ToyCombine.cpp
     toy/toyToAffineLoops.cpp
     toy/ToyToLLVM.cpp
+    toy/ShapeInferencePass.cpp
 
     DEPENDS
     ToyOpsIncGen
     ToyCombineIncGen
+    ToyShapeInferenceInterfaceIncGen
 )
 
 add_executable(mlir-toy toy/toy.cpp)

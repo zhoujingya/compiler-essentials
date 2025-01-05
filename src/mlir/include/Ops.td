@@ -18,6 +18,7 @@ include "mlir/IR/SymbolInterfaces.td"
 include "mlir/Interfaces/CallInterfaces.td"
 include "mlir/Interfaces/CastInterfaces.td"
 include "mlir/Interfaces/SideEffectInterfaces.td"
+include "ShapeInferenceInterface.td"
 
 // Provide a definition of the 'toy' dialect in the ODS framework so that we
 // can define our operations.
@@ -66,7 +67,7 @@ def Toy_Type : AnyTypeOf<[F64Tensor, Toy_StructType]>;
 // constant operation is marked as 'Pure' as it is a pure operation
 // and may be removed if dead.
 def ConstantOp : Toy_Op<"constant",
-    [ConstantLike, Pure,
+    [ConstantLike, Pure, DeclareOpInterfaceMethods<ShapeInferenceOpInterface>
      ]> {
   // Provide a summary and description for this operation. This can be used to
   // auto-generate documentation of the operations within our dialect.
@@ -115,7 +116,7 @@ def ConstantOp : Toy_Op<"constant",
 //===----------------------------------------------------------------------===//
 
 def AddOp : Toy_Op<"add",
-    [Pure, ]> {
+    [Pure, DeclareOpInterfaceMethods<ShapeInferenceOpInterface>]> {
   let summary = "element-wise addition operation";
   let description = [{
     The "add" operation performs element-wise addition between two tensors.
@@ -140,6 +141,7 @@ def AddOp : Toy_Op<"add",
 
 def CastOp : Toy_Op<"cast", [
      DeclareOpInterfaceMethods<CastOpInterface>,
+     DeclareOpInterfaceMethods<ShapeInferenceOpInterface>,
      Pure,
      SameOperandsAndResultShape
   ]> {
@@ -257,7 +259,7 @@ def GenericCallOp : Toy_Op<"generic_call",
 //===----------------------------------------------------------------------===//
 
 def MulOp : Toy_Op<"mul",
-    [Pure, ]> {
+    [Pure, DeclareOpInterfaceMethods<ShapeInferenceOpInterface>]> {
   let summary = "element-wise multiplication operation";
   let description = [{
     The "mul" operation performs element-wise multiplication between two
@@ -448,7 +450,7 @@ def StructConstantOp : Toy_Op<"struct_constant", [ConstantLike, Pure]> {
 //===----------------------------------------------------------------------===//
 
 def TransposeOp : Toy_Op<"transpose",
-    [Pure, ]> {
+    [Pure, DeclareOpInterfaceMethods<ShapeInferenceOpInterface>]> {
   let summary = "transpose operation";
 
   let arguments = (ins F64Tensor:$input);

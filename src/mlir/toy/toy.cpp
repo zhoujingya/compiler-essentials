@@ -190,6 +190,7 @@ int dumpMLIR() {
     // optPM.addPass(mlir::toy::createShapeInferencePass());
     optPM.addPass(mlir::createCanonicalizerPass());
     optPM.addPass(mlir::createCSEPass());
+    optPM.addPass(mlir::toy::createShapeInferencePass());
   }
 
   if (isLoweringToAffine) {
