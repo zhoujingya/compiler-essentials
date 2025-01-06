@@ -1,6 +1,6 @@
 // RUN: mlir-toy %s -emit=mlir -opt 2>&1 | FileCheck  %s
 // RUN: mlir-toy %s -emit=run-jit 2>&1 | FileCheck -check-prefix=RUN-JIT %s
-
+// REQUIRES: tiny-tblgen
 //CHECK: module {
 //CHECK-NEXT:   toy.func @main() {
 //CHECK-NEXT:     %0 = toy.constant dense<1.000000e+00> : tensor<f64>
