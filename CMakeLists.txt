@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 project(compiler-essential
-        VERSION 1.0.0)
+        VERSION 1.0.0
+        LANGUAGES C CXX CUDA)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # check if mold is installed
